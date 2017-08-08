@@ -34,6 +34,7 @@ class Stead(June2016Update):
 
     operstatus = models.ForeignKey(OperStat, verbose_name='Статус действия над записью – причина появления записи',
                                    default=0)
+    counter = models.IntegerField(blank=True, null=True)
     livestatus = models.BooleanField('Признак действующего адресного объекта', default=False)
 
     def __str__(self):

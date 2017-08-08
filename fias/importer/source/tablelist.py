@@ -46,6 +46,7 @@ class TableList(object):
         if self.table_list is None:
             self.table_list = {}
             for filename in self.get_table_list():
+                print('table '+ filename)
                 table = TableFactory.parse(filename=filename)
                 if table is None:
                     continue

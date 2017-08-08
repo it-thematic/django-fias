@@ -60,6 +60,7 @@ def load_complete_data(path=None,
     pre_import.send(sender=object.__class__, version=tablelist.version)
 
     for tbl in get_table_names(tables):
+        print('ese')
         # Пропускаем таблицы, которых нет в архиве
         if tbl not in tablelist.tables:
             continue
@@ -78,10 +79,10 @@ def load_complete_data(path=None,
                 first_table.truncate()
 
             # Удаляем индексы из модели перед импортом
-            if not keep_indexes:
-                pre_drop_indexes.send(sender=object.__class__, table=first_table)
-                remove_indexes_from_model(model=first_table.model)
-                post_drop_indexes.send(sender=object.__class__, table=first_table)
+            # if not keep_indexes:
+            #     pre_drop_indexes.send(sender=object.__class__, table=first_table)
+            #     remove_indexes_from_model(model=first_table.model)
+            #     post_drop_indexes.send(sender=object.__class__, table=first_table)
 
             # Импортируем все таблицы модели
             for table in tablelist.tables[tbl]:
@@ -89,10 +90,10 @@ def load_complete_data(path=None,
                 loader.load(tablelist=tablelist, table=table)
 
             # Восстанавливаем удалённые индексы
-            if not keep_indexes:
-                pre_restore_indexes.send(sender=object.__class__, table=first_table)
-                restore_indexes_for_model(model=first_table.model)
-                post_restore_indexes.send(sender=object.__class__, table=first_table)
+            # if not keep_indexes:
+            #     pre_restore_indexes.send(sender=object.__class__, table=first_table)
+            #     restore_indexes_for_model(model=first_table.model)
+            #     post_restore_indexes.send(sender=object.__class__, table=first_table)
 
             st = Status(table=tbl, ver=tablelist.version)
             st.save()
@@ -136,9 +137,10 @@ def update_data(path=None, version=None, skip=False, data_format='xml', limit=10
 
 def auto_update_data(skip=False, data_format='xml', limit=1000, tables=None, tempdir=None):
     min_version = Status.objects.filter(table__in=get_table_names(None)).aggregate(Min('ver'))['ver__min']
-    min_ver = Version.objects.get(ver=min_version)
 
     if min_version is not None:
+        min_ver = Version.objects.get(ver=min_version)
+
         for version in Version.objects.filter(ver__gt=min_version).order_by('ver'):
             pre_update.send(sender=object.__class__, before=min_ver, after=version)
 

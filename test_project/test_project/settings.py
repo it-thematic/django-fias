@@ -5,18 +5,21 @@ import os
 PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), os.pardir))
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
-MANAGERS = ADMINS
 
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_PATH, 'db.sqlite'),
+           'ENGINE': 'django.db.backends.postgresql_psycopg2',
+		   'NAME': 'fias',
+		   'USER': 'postgres',
+		   'PASSWORD': 'ittroot',
+		   'HOST': '192.168.2.76',
+		   'PORT': '5432',
     },
 }
 
@@ -85,20 +88,16 @@ STATICFILES_FINDERS = (
 SECRET_KEY = '(*jt_e3pgio9!3(@#)^*w0q5^0)63g@ti6a=m6y^f9n1v1@+u^'
 
 # List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
+
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+   'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'test_project.urls'
@@ -106,11 +105,23 @@ ROOT_URLCONF = 'test_project.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'test_project.wsgi.application'
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -127,6 +138,21 @@ INSTALLED_APPS = (
     'django_select2',
     'tst',
 )
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 
 FIAS_TABLES = [
@@ -192,3 +218,13 @@ LOGGING = {
         #},
     }
 }
+FIAS_SUGGEST_BACKEND = 'fias.suggest.backends.sphinx'
+FIAS_SEARCH_ENGINE='sphinx'
+
+# FIAS_DATABASE_ALIAS = 'fias'
+# DATABASE_ROUTERS = ['fias.routers.FIASRouter']
+# FIAS_SEARCHD_CONNECTION = {
+#     'host': 'localhost',
+#     'port': 5432,
+# }
+
