@@ -60,6 +60,7 @@ def load_complete_data(path=None,
     pre_import.send(sender=object.__class__, version=tablelist.version)
 
     for tbl in get_table_names(tables):
+        print('ese')
         # Пропускаем таблицы, которых нет в архиве
         if tbl not in tablelist.tables:
             continue
@@ -78,10 +79,10 @@ def load_complete_data(path=None,
                 first_table.truncate()
 
             # Удаляем индексы из модели перед импортом
-            if not keep_indexes:
-                pre_drop_indexes.send(sender=object.__class__, table=first_table)
-                remove_indexes_from_model(model=first_table.model)
-                post_drop_indexes.send(sender=object.__class__, table=first_table)
+            # if not keep_indexes:
+            #     pre_drop_indexes.send(sender=object.__class__, table=first_table)
+            #     remove_indexes_from_model(model=first_table.model)
+            #     post_drop_indexes.send(sender=object.__class__, table=first_table)
 
             # Импортируем все таблицы модели
             for table in tablelist.tables[tbl]:
@@ -89,10 +90,10 @@ def load_complete_data(path=None,
                 loader.load(tablelist=tablelist, table=table)
 
             # Восстанавливаем удалённые индексы
-            if not keep_indexes:
-                pre_restore_indexes.send(sender=object.__class__, table=first_table)
-                restore_indexes_for_model(model=first_table.model)
-                post_restore_indexes.send(sender=object.__class__, table=first_table)
+            # if not keep_indexes:
+            #     pre_restore_indexes.send(sender=object.__class__, table=first_table)
+            #     restore_indexes_for_model(model=first_table.model)
+            #     post_restore_indexes.send(sender=object.__class__, table=first_table)
 
             st = Status(table=tbl, ver=tablelist.version)
             st.save()

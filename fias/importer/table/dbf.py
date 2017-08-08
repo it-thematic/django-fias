@@ -38,7 +38,7 @@ class DBFTable(Table):
             items_dict = dict(items)
             for key, model in self.related_fields.items():
                 value = items_dict.pop(key, None)
-                if value:
+                if value != None:
                     items_dict['{0}_id'.format(key)] = value
             return self.model(**items_dict)
 

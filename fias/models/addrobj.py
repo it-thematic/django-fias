@@ -20,6 +20,7 @@ class AddrObj(June2016Update):
     """
     class Meta:
         app_label = 'fias'
+        db_table='fias_addrobj'
         verbose_name = 'Адресообразующий элемент'
         verbose_name_plural = 'Адресообразующие элементы'
         index_together = (

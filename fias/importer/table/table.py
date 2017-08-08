@@ -18,7 +18,7 @@ from fias.models import (
 )
 
 table_names = {
-    'addrobj': AddrObj,
+    'addrob': AddrObj,
     'house': House,
     'houseint': HouseInt,
     'landmark': LandMark,

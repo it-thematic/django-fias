@@ -16,7 +16,7 @@ TABLES_STATS = (
 )
 TABLES_DEFAULT = ('normdoc', 'landmark', 'house', 'houseint', 'room', 'stead')
 
-TABLES = TABLES_STATS + ('socrbase', 'addrobj')
+TABLES = TABLES_STATS + ('socrbase', 'addrob')
 TABLES += tuple(x.lower() for x in TABLES_DEFAULT if x.lower() in list(set(getattr(settings, 'FIAS_TABLES', []))))
 
 DELETED_TABLES = ('normdoc', 'addrobj', 'house', 'room', 'stead', 'houseint')
